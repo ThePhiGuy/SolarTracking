@@ -24,7 +24,7 @@ inline void DecimalToHMS(double decimalDegrees, int &hours, int&arcMinutes, doub
     return;
 }
 
-inline void DecimalToDMS(double decimalDegrees, int &degrees, int &minutes, double &seconds)
+inline void DecimaltoDMS(double decimalDegrees, int &degrees, int &minutes, double &seconds)
 {
     degrees = (int)decimalDegrees; // Whole number of degrees
     minutes = (int)((decimalDegrees - degrees) * 60); // remainder after whole number of degrees * 60
@@ -42,7 +42,7 @@ inline void DMStoHMS(int degrees, int minutes, int seconds, int &hours, int &arc
 {
     double decimalDegrees;
     DMStoDecimal(degrees, minutes, seconds, decimalDegrees);
-    DecimalToHMS(decimalDegrees, hours, arcMinutes, arcSeconds);
+    DecimaltoHMS(decimalDegrees, hours, arcMinutes, arcSeconds);
     return;
 }
 

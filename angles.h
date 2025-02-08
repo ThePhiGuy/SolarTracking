@@ -5,7 +5,7 @@
 
 inline void HMStoDecimal(int, int, double, double&);
 inline void HMStoDMS(int, int, double, int&, int&, double&);
-inline void DecimalToHMS(double, int&, int&, double&);
+inline void DecimaltoHMS(double, int&, int&, double&);
 inline void DecimaltoDMS(double, int&, int&, double&);
 inline void DMStoDecimal(int, int, double, double&);
 inline void DMStoHMS(int, int, double, int&, int&, double&);
