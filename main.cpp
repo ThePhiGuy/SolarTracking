@@ -10,7 +10,7 @@ int main()
 {
     double testJD = 2446896.30625;
 
-    cout << "\n" << fixed << greenwichMeanSiderealTime(testJD) << endl;
+    cout << "\n";
 
     return 0;
 }
