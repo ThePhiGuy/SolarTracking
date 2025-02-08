@@ -2,13 +2,13 @@
 
 using namespace std;
 
-inline void HMStoDecimal(int hours, int arcMinutes, int arcSeconds, double &decimalDegrees)
-{
-    decimalDegrees = (hours * 15) + (arcMinutes / 4) + (arcSeconds / 240);
+void HMStoDecimal(int hours, int arcMinutes, double arcSeconds, double &decimalDegrees)
+{ // CONFIRMED ACCURATE.
+    decimalDegrees = (hours * 15) + ((15 * arcMinutes)/ 60.0) + (15 * arcSeconds / 3600.0); // Decimals added for division to ensure precision of output
     return;  
 }
 
-inline void HMStoDMS(int hours, int arcMinutes, double arcSeconds, int &degrees, int &minutes, double &seconds)
+void HMStoDMS(int hours, int arcMinutes, double arcSeconds, int &degrees, int &minutes, double &seconds)
 {
     double decimalDegrees;
     HMStoDecimal(hours, arcMinutes, arcSeconds, decimalDegrees);
@@ -16,15 +16,15 @@ inline void HMStoDMS(int hours, int arcMinutes, double arcSeconds, int &degrees,
     return;
 }
 
-inline void DecimalToHMS(double decimalDegrees, int &hours, int&arcMinutes, double &arcSeconds)
-{
+void DecimaltoHMS(double decimalDegrees, int &hours, int&arcMinutes, double &arcSeconds)
+{ // CONFIRMED ACCURATE.
     hours = (int)(decimalDegrees/15);
     arcMinutes = (int)(((decimalDegrees / 15) - hours) * 60);
     arcSeconds = ((((decimalDegrees / 15) - hours) * 60) - arcMinutes) * 60;
     return;
 }
 
-inline void DecimaltoDMS(double decimalDegrees, int &degrees, int &minutes, double &seconds)
+void DecimaltoDMS(double decimalDegrees, int &degrees, int &minutes, double &seconds)
 {
     degrees = (int)decimalDegrees; // Whole number of degrees
     minutes = (int)((decimalDegrees - degrees) * 60); // remainder after whole number of degrees * 60
@@ -32,18 +32,38 @@ inline void DecimaltoDMS(double decimalDegrees, int &degrees, int &minutes, doub
     return;
 }
 
-inline void DMStoDecimal(int degrees, int minutes, double seconds, double &decimalDegrees)
+void DMStoDecimal(int degrees, int minutes, double seconds, double &decimalDegrees)
 {
-    decimalDegrees = degrees + (minutes / 60) + (seconds / 3600);
+    decimalDegrees = degrees + (minutes / 60.0) + (seconds / 3600.0);
     return;
 }
 
-inline void DMStoHMS(int degrees, int minutes, int seconds, int &hours, int &arcMinutes, double &arcSeconds)
+void DMStoHMS(int degrees, int minutes, int seconds, int &hours, int &arcMinutes, double &arcSeconds)
 {
     double decimalDegrees;
     DMStoDecimal(degrees, minutes, seconds, decimalDegrees);
     DecimaltoHMS(decimalDegrees, hours, arcMinutes, arcSeconds);
     return;
+}
+
+
+
+string hmsFormatter(int hours, int arcMinutes, double arcSeconds)
+{
+    int preDecimal = (int)arcSeconds;
+    double postDecimal = arcSeconds - preDecimal;
+    
+    string formatted = to_string(hours) + "h" + to_string(arcMinutes) + "m" + to_string(preDecimal) + "s." + to_string(postDecimal).erase(0,2);
+    return (formatted);
+}
+
+string dmsFormatter(int degrees, int minutes, double seconds)
+{
+    int preDecimal = (int)seconds;
+    double postDecimal = seconds - preDecimal;
+    
+    string formatted = to_string(degrees) + "°" + to_string(minutes) + "'" + to_string(preDecimal) + "\"." + to_string(postDecimal).erase(0,2);
+    return (formatted);
 }
 
 
