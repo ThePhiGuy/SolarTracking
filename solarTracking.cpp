@@ -3,7 +3,7 @@
 Sun::Sun()
 {
     double latitude = 46.731705;
-    double longitude = -116.999939;
+    double longitude = 116.999939;
 
     earthLatitude = latitude;
     earthLongitude = longitude;

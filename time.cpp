@@ -28,8 +28,8 @@ void Time::updateUTC(int &yr, int &mo, double &day) {
     std::time_t *currentTime;
     std::time(currentTime);
     std::tm *gm = gmtime(currentTime);
-    yr = gm->tm_year;
-    mo = gm->tm_mon;
+    yr = gm->tm_year + 1900;
+    mo = gm->tm_mon + 1;
     day = gm->tm_mday + (gm->tm_min*60 + gm->tm_hour*3600)/static_cast<double>(86400);
 }
 
