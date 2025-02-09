@@ -1,5 +1,9 @@
-This is a project meant to adapt a solar panel tilt system at Calvin University to use algorithmic solar tracking.
+# Introduction
+    This code is meant to help adapt a tilt system on a solar panel to use algorithmic solar tracking at Calvin University.
 
-This is a work in progress with about .1degrees of accuracy currently in altitude, with a few more bugs to work out, and more rough code to smooth out. 
+    We are still in very early stages of development, with the goal to finish out some of the smaller algorithims to increase accuracy,
+    and to clean up and make code efficient. 
 
-![image](https://github.com/user-attachments/assets/f2193974-7592-4e7c-a4d0-480cf7214e66)
+    This is purely a functional build meant to test functionality of algorithims, and is not meant for general use quite yet.
+
+    Accuracy currently of all algorithims is within .1degrees of latitude on the sun, and expected completion accuracy is within .01degrees.
