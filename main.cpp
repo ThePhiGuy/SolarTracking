@@ -1,23 +1,16 @@
 #include <iostream>
 #include <iomanip>
 
-#include "angles.h"
+#include "solarTracking.h"
 
 using namespace std;
 
 int main()
 {
+    Sun solarTest;
 
-    double test1;
-
-    DMStoDecimal(23,26,21.448, test1);
-    cout << "\n" << setprecision(10) << fixed << test1;
-    DMStoDecimal(0,0,46.8150, test1);
-    cout << "\n" << setprecision(10) << fixed << test1;
-    DMStoDecimal(0,0,0.00059, test1);
-    cout << "\n" << setprecision(10) << fixed << test1;
-    DMStoDecimal(0,0,0.001813, test1);
-    cout << "\n" << setprecision(10) << fixed << test1;
+    solarTest.updateValues();
+    solarTest.getAltitude();
 
     return 0;
 }

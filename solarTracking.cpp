@@ -1,13 +1,18 @@
 #include <iostream>
+
 #include "solarTracking.h"
 #include "time.h"
 #include "julianDate.h"
 #include "angles.h"
 
-Sun::Sun(double latitude, double longitude)
+Sun::Sun()
 {
+    double latitude = 42.9364;
+    double longitude = 85.6681;
+
     earthLatitude = latitude;
     earthLongitude = longitude;
+    
     updateValues();
 }
 
@@ -19,21 +24,20 @@ void Sun::updateValues()
     // start of calculations internally
 
     calcApparentLongitude();
-    calcEclipticObliquity(); // needed before Right Ascension & declination calculations.
-
+    calcElipticObliquity(); // needed before Right Ascension & declination calculations.
     calcRightAscension();
     calcDeclination();
+    calcElipticObliquity();
+    calcLocalHourAngle();
+    calcAltitude();
 }
 
 void Sun::julianAndGrenwich()
 {
     Time::updateUTC(year, month, day);
-    JD = julianDay(year, month, day);
-    // JDE = julianEphimerisDay(year, month, day);
-    JDE = 2448908.5; // Test value for Example 24.a
+    JD = Julian::julianDay(year, month, day);
+    JDE = Julian::julianEphimerisDay(year, month, day);
     GMST = Time::greenwichMeanSiderealTime(JD);
-
-    
 
     return;
 }
@@ -76,6 +80,8 @@ void Sun::calcRightAscension()
     double correctedEclipticObliquity = elipticObliquity + correctionAmount; // obliquity input into function in radians
 
     rightAscension = atan2(cos(elipticObliquity) * sin(apparentLongitude), cos(apparentLongitude));
+
+    radToDegree(rightAscension);
 
     return;
 }
@@ -131,7 +137,36 @@ void Sun::calcObliquityNutation()
     obliquityNutation = (0.002555555 * cos(lunarOmega)) + (0.00015833 * cos(2 * solarMeanLongitude)) + (0.0000277777778 * cos (2 * lunarMeanLongitude)) - (0.00002500001 * cos(2 * lunarOmega));
     // EQ on page 132 above Table 21A (I think this is right, converted all of the values from arcseconds to decimal degrees)
     // Output in Degrees
+    return;
 }
 
+void Sun::calcLocalHourAngle()
+{
+    localHourAngle = GMST - earthLongitude - rightAscension; // All values in degrees, output LHA is in Degrees.
 
+    simplifyDegrees(localHourAngle);
+
+    degreeToRad(localHourAngle);
+
+    return;
+}
+
+void Sun::calcAltitude()
+{
+    double tempLat = earthLatitude;
+    degreeToRad(tempLat); // Temporary Latitude used to not interrupt other functions that use latitude in degrees. Fix at some point.
+
+    degreeToRad(localHourAngle); 
+
+    altitude = asin(sin(tempLat) * sin(declinaton) + cos(tempLat) * cos (declinaton) * cos(localHourAngle));
+
+    radToDegree(altitude);
+    return;
+}
+
+void Sun::getAltitude()
+{
+    cout << "\nI Hope this works\t" << altitude;
+    return;
+}
 

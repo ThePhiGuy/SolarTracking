@@ -1,19 +1,14 @@
 #ifndef SOLARTRACKING_HPP
 #define SOLARTRACKING_HPP
 
-#include "julianDate.h"
-#include "time.h"
-#include "angles.h"
-
-
 
 using namespace std;
 
 class Sun
 {
     private:
-        double earthLatitude;
-        double earthLongitude; // Positive West Longitude
+        double earthLatitude; // Stored in Degrees
+        double earthLongitude; // Positive West Longitude Stored in Degrees
 
         double apparentLongitude; // Stored in class in Radians
         double correctionOmega; // used to correct equations for apparentLong/RA/Dec
@@ -22,7 +17,11 @@ class Sun
         double obliquityNutation; // Stored in Class in Degrees
 
         double rightAscension; // Stored in Class in Degrees
-        double declinaton; // Stored in Class in Degrees
+        double declinaton; // Stored in Class in Radians
+
+        double localHourAngle; // Stored in Radians
+
+        double altitude; // ouput in Degrees
 
         double day;
         int year, month;
@@ -32,7 +31,7 @@ class Sun
         double GMST; // Grenwich Mean Sidreal Time
 
     public:
-        Sun(double, double);
+        Sun();
         void updateValues();
         void julianAndGrenwich();
 
@@ -41,6 +40,10 @@ class Sun
         void calcDeclination();
         void calcElipticObliquity();
         void calcObliquityNutation();
+        void calcLocalHourAngle();
+
+        void calcAltitude();
+        void getAltitude();
 
 };
 

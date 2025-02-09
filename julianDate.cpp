@@ -2,7 +2,7 @@
 
 using namespace std;
 
-double julianDay(int year, int month, double day)
+double Julian::julianDay(int year, int month, double day)
 {
     if ((month == 1) || (month == 2)) // If date in Jan or Feb, it is the 13th/14th month of previous year
     {
@@ -18,12 +18,12 @@ double julianDay(int year, int month, double day)
 }
 
 
-inline double julianToModified(double julianDate)
+inline double Julian::julianToModified(double julianDate)
 {
     return (julianDate - 2400000.5); 
 }
 
-double julianEphimerisDay(int year, int month, double day)
+double Julian::julianEphimerisDay(int year, int month, double day)
 {
     double julian = julianDay(year, month, day);
 
