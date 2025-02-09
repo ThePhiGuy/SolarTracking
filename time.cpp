@@ -20,17 +20,20 @@ double Time::greenwichApparentSiderealTime(double greenwichMeanSidreal)
 /**
  * @brief Update yr, month, and day for Julian time in utc
  * 
- * @param yr - 
- * @param mo 
- * @param day 
+ * @param yr Will be updated with year since the epoch
+ * @param mo Month of the current year
+ * @param day Will be set to the fractional day in UTC
  */
 void Time::updateUTC(int &yr, int &mo, double &day) {
-    std::time_t *currentTime;
+    std::time_t *currentTime = new std::time_t();
     std::time(currentTime);
     std::tm *gm = gmtime(currentTime);
     yr = gm->tm_year + 1900;
     mo = gm->tm_mon + 1;
-    day = gm->tm_mday + (gm->tm_min*60 + gm->tm_hour*3600)/static_cast<double>(86400);
+    day = gm->tm_mday + (gm->tm_min*60 + gm->tm_hour*3600)/86400.0;
+    // yr = 1992;
+    // mo = 10;
+    // day = 13.0;
 }
 
 double Time::dynamicUniversalTimeOffset(int year, int month)
