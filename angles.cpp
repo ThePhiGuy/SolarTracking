@@ -3,7 +3,7 @@
 using namespace std;
 
 void HMStoDecimal(int hours, int arcMinutes, double arcSeconds, double &decimalDegrees)
-{ // CONFIRMED ACCURATE.
+{ // CONFIRMED ACCURATE .
     decimalDegrees = (hours * 15) + ((15 * arcMinutes)/ 60.0) + (15 * arcSeconds / 3600.0); // Decimals added for division to ensure precision of output
     return;  
 }

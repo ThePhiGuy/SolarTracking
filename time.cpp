@@ -1,5 +1,6 @@
-#include "greenwichTime.h"
+#include "time.h"
 #include "angles.h"
+#include <cmath>
 
 using namespace std;
 
