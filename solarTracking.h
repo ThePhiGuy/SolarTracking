@@ -42,10 +42,6 @@ class Sun
         void calcElipticObliquity();
         void calcObliquityNutation();
 
-        double meanAnomaly(double);
-        double eccentricityOfEarth(double); 
-        
-        double trueEccentricity();
 };
 
 #endif

@@ -70,18 +70,24 @@ void Sun::calcApparentLongitude()
 
 void Sun::calcRightAscension()
 {
-    double correctedEclipticObliquity = eclipticObliquity + degreeToRad(0.00256 * cos(correctionOmega)); // obliquity input into function in radians
+    double correctionAmount = 0.00256 * cos(correctionOmega); // Correction Mentioned for obliquity
+    degreeToRad(correctionAmount);
 
-    rightAscension = atan2(cos(eclipticObliquity) * sin(apparentLongitude), cos(apparentLongitude));
+    double correctedEclipticObliquity = elipticObliquity + correctionAmount; // obliquity input into function in radians
+
+    rightAscension = atan2(cos(elipticObliquity) * sin(apparentLongitude), cos(apparentLongitude));
 
     return;
 }
 
 void Sun::calcDeclination()
 {
-    double correctedEclipticObliquity = eclipticObliquity + degreeToRad(0.00256 * cos(correctionOmega)); // obliquity input into function in radians
+    double correctionAmount = 0.00256 * cos(correctionOmega); // Correction mentioned for obliquity
+    degreeToRad(correctionAmount);
 
-    declinaton = asin(sin(eclipticObliquity) * sin(apparentLongitude));
+    double correctedEclipticObliquity = elipticObliquity + correctionAmount; // obliquity input into function in radians
+
+    declinaton = asin(sin(elipticObliquity) * sin(apparentLongitude));
 
     return;
 }
@@ -100,6 +106,7 @@ void Sun::calcElipticObliquity()
 
     elipticObliquity = meanObliquity - obliquityNutation; // true obliquity in decimal degrees
 
+    degreeToRad(elipticObliquity); // Outputs in rads for other functions trig
     return;
 }
 
