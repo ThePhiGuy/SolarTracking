@@ -1,22 +1,23 @@
 #include <iostream>
 #include <iomanip>
 
-#include "solarTracking.h"
+#include "angles.h"
 
-using namespace Time;
+using namespace std;
 
 int main()
 {
-    double test = dynamicUniversalTimeOffset(2020, 0);
 
-    double coeff[4] = {9.20, 0.57, 0.10, 0.09}; // Coefficients for nutation equations
+    double test1;
 
-    for (int i = 0; i < 4; i++)
-    {
-        DMStoDecimal(0, 0, coeff[i], coeff[i]);
-        cout << coeff[i];
-    }
+    DMStoDecimal(23,26,21.448, test1);
+    cout << "\n" << setprecision(10) << fixed << test1;
+    DMStoDecimal(0,0,46.8150, test1);
+    cout << "\n" << setprecision(10) << fixed << test1;
+    DMStoDecimal(0,0,0.00059, test1);
+    cout << "\n" << setprecision(10) << fixed << test1;
+    DMStoDecimal(0,0,0.001813, test1);
+    cout << "\n" << setprecision(10) << fixed << test1;
 
-    cout << "\n" << test << endl;
     return 0;
 }

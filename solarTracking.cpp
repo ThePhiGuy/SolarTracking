@@ -1,35 +1,129 @@
 #include <iostream>
 #include "solarTracking.h"
+#include "time.h"
+#include "julianDate.h"
+#include "angles.h"
 
-Sun::Sun()
+Sun::Sun(double latitude, double longitude)
 {
-    JD = julianDay(2024, 2, 9.01); // Function to pull JD
-    JDE = julianEphimerisDay(2024, 2, 9.01);
+    earthLatitude = latitude;
+    earthLongitude = longitude;
+    updateValues();
 }
 
-void Sun::obliquityNutation()
+void Sun::updateValues()
+{
+    julianAndGrenwich();
+    // Call all functions needed to update variables in the right order in here.
+
+    // start of calculations internally
+
+    calcApparentLongitude();
+    calcEclipticObliquity(); // needed before Right Ascension & declination calculations.
+
+    calcRightAscension();
+    calcDeclination();
+}
+
+void Sun::julianAndGrenwich()
+{
+    Time::updateUTC(year, month, day);
+    JD = julianDay(year, month, day);
+    // JDE = julianEphimerisDay(year, month, day);
+    JDE = 2448908.5; // Test value for Example 24.a
+    GMST = Time::greenwichMeanSiderealTime(JD);
+
+    
+
+    return;
+}
+
+void Sun::calcApparentLongitude()
 {
     double t1 = ((JDE - 2451545) / 36525.0); // EQ 21.1 Julian Epoch Centuries
 
     double t2 = t1 * t1; // Calculates T^2 and T^3 once, to use multiple times.
     double t3 = t2 * t1;
+
     
-    double meanElongation = 297.85036 + (445267.111480 * t1) - (0.001942 * t2) + (t3 / 189474.0); // Represented as D in nutation eq (p132 meeus)
-    double meanSunAnomaly = 357.52772 + (35999.050340 * t1) - (0.0001603 * t2) - (t3 / 300000.0); // Represented as M
-    double meanLunarAnomaly = 134.96298 + (477198.867398 * t1) + (0.0086972 * t2) + (t3 / 56250.0); // Represented as M'
-    double moonArgumentOfLatitude = 93.27191 + (483202.017538 * t1) - (0.0036825 * t2) + (t3 / 327270.0); // Represented as F
-    double moonAscendingNodeLongitude = 125.04452 - (1934.136261 * t1) + (0.0020708 * t2) + (t3 / 450000.0); // Represented as Omega
+
+    double geometricMeanLongitude = 280.46645 + (36000.76983 * t1) + (0.0003032 * t2); // Represented by L0 in Degrees EQ 24.2
+    double solarMeanAnomaly = 357.52910 + (35999.05030 * t1) - (0.0001559 * t2)- (0.00000048 * t3); // Represented by M in Degrees Equation 24.3
+    degreeToRad(solarMeanAnomaly); // converted for next equation use
+
+    double solarEquationOfCenter = (1.914600 - (0.004817 * t1) - (0.000014 * t2)) * sin(solarMeanAnomaly)
+                                    + (0.019993 - 0.000101 * t1) * sin(2*solarMeanAnomaly)
+                                    + 0.000290 * sin(3*solarMeanAnomaly); // represented by C in degrees EQ 24.4.1?
+
+    double trueLongitude = geometricMeanLongitude + solarEquationOfCenter;
 
 
-    double solarMeanLongitude = 280.4665 + (36000.7698 * t1); // Represented by L in Degrees
+    correctionOmega = 125.04 - (1934.136 * t1); // output in degrees
+    degreeToRad(correctionOmega); // converts to radians for calculation
+
+    apparentLongitude = trueLongitude - 0.00569 - (0.00478 * sin(correctionOmega)); // output in degrees represented by lambda
+
+    degreeToRad(apparentLongitude); // switches output to be in radians for RA and DEC calculations
+
+    return;
+}
+
+void Sun::calcRightAscension()
+{
+    double correctedEclipticObliquity = eclipticObliquity + degreeToRad(0.00256 * cos(correctionOmega)); // obliquity input into function in radians
+
+    rightAscension = atan2(cos(eclipticObliquity) * sin(apparentLongitude), cos(apparentLongitude));
+
+    return;
+}
+
+void Sun::calcDeclination()
+{
+    double correctedEclipticObliquity = eclipticObliquity + degreeToRad(0.00256 * cos(correctionOmega)); // obliquity input into function in radians
+
+    declinaton = asin(sin(eclipticObliquity) * sin(apparentLongitude));
+
+    return;
+}
+
+
+void Sun::calcElipticObliquity()
+{
+    calcObliquityNutation();
+
+    double t1 = ((JDE - 2451545) / 36525.0); // EQ 21.1 Julian Epoch Centuries
+
+    double t2 = t1 * t1;
+    double t3 = t2 * t1;
+
+    double meanObliquity = 23.439291111  - (0.0130041667 * t1) - (0.0000001639 * t2) + (0.0000005036 * t3); // meanObliquity in terms of Decimal Degrees
+
+    elipticObliquity = meanObliquity - obliquityNutation; // true obliquity in decimal degrees
+
+    return;
+}
+
+
+void Sun::calcObliquityNutation()
+{
+    double t1 = ((JDE - 2451545) / 36525.0); // EQ 21.1 Julian Epoch Centuries
+
+    double t2 = t1 * t1; // Calculates T^2 and T^3 once, to use multiple times.
+    double t3 = t2 * t1;
+
+    double solarMeanLongitude = 280.46645 + (36000.76983 * t1) + (0.0003032 * t2); // Represented by L in Degrees EQ 24.2
     double lunarMeanLongitude = 218.3165 + (481267.8813 * t1); // Represented by L' in Degrees
 
+    double lunarOmega = 125.04452 - (1934.136261 * t1) + (0.0020708 * t2) + (t3 / 450000); // Represented by omega in Degrees
+    
     degreeToRad(solarMeanLongitude); // Converts both values to Radians for trig calculations
     degreeToRad(lunarMeanLongitude);
+    degreeToRad(lunarOmega);
 
 
-    nutation = 9.20 * 1;
-
+    obliquityNutation = (0.002555555 * cos(lunarOmega)) + (0.00015833 * cos(2 * solarMeanLongitude)) + (0.0000277777778 * cos (2 * lunarMeanLongitude)) - (0.00002500001 * cos(2 * lunarOmega));
+    // EQ on page 132 above Table 21A (I think this is right, converted all of the values from arcseconds to decimal degrees)
+    // Output in Degrees
 }
 
 
