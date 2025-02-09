@@ -164,3 +164,22 @@ void Sun::getAltitude()
     cout << "\nI Hope this works\t" << altitude << '\n';
     return;
 }
+
+void Sun::printDebug() {
+    cout << "Lat: " << earthLatitude <<
+    "\nLong: " << earthLongitude <<
+    "\nApparent Long: " << apparentLongitude <<
+    "\nCorrection Omega: " << correctionOmega <<
+    "\nEliptical Obliquity: " << elipticObliquity <<
+    "\nObliquity Nutation: " << obliquityNutation <<
+    "\nRA: " << rightAscension <<
+    "\nDec: " << declinaton <<
+    "\nLocal Hour Angle: " << localHourAngle <<
+    "\nAlt: " << altitude <<
+    "\nYear: " << year <<
+    "\nMonth: " << month <<
+    "\nDay: " << day <<
+    "\nJulian Date: " << JD <<
+    "\nJulian Date Ephimeris: " << JDE <<
+    "\nGMST: " << GMST << '\n';
+}

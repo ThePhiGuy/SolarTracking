@@ -12,5 +12,7 @@ int main()
     solarTest.updateValues();
     solarTest.getAltitude();
 
+    solarTest.printDebug();
+
     return 0;
 }
