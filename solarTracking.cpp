@@ -2,6 +2,9 @@
 
 Sun::Sun()
 {
+    // double latitude = 46.731705;
+    // double longitude = 116.999939;
+
     double latitude = 46.731705;
     double longitude = 116.999939;
 
@@ -33,8 +36,6 @@ void Sun::julianAndGrenwich()
     JD = Julian::julianDay(year, month, day);
     // JDE = Julian::julianEphimerisDay(year, month, day);
     JDE = JD;
-    earthLatitude = 42.9328;
-    earthLongitude = 85.5815;
     GMST = Time::greenwichMeanSiderealTime(JD);
 
     return;
