@@ -38,7 +38,7 @@ void DMStoDecimal(int degrees, int minutes, double seconds, double &decimalDegre
     return;
 }
 
-void DMStoHMS(int degrees, int minutes, int seconds, int &hours, int &arcMinutes, double &arcSeconds)
+void DMStoHMS(int degrees, int minutes, double seconds, int &hours, int &arcMinutes, double &arcSeconds)
 {
     double decimalDegrees;
     DMStoDecimal(degrees, minutes, seconds, decimalDegrees);

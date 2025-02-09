@@ -3,6 +3,7 @@
 
 #include <string>
 using namespace std;
+
 // Collection of functions useful in converting from HMS (hours, arcminutes, arcseconds), Decimal (Decimal Degrees), and DMS (Degrees, minutes, seconds)
 
 void HMStoDecimal(int, int, double, double&);
