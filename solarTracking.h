@@ -1,6 +1,10 @@
 #ifndef SOLARTRACKING_HPP
 #define SOLARTRACKING_HPP
 
+#include "time.h"
+#include "julianDate.h"
+#include "angles.h"
+#include <iostream>
 
 using namespace std;
 
@@ -44,6 +48,8 @@ class Sun
 
         void calcAltitude();
         void getAltitude();
+
+        void printDebug();
 
 };
 

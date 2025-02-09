@@ -17,6 +17,13 @@ double Time::greenwichApparentSiderealTime(double greenwichMeanSidreal)
     return 0.0;
 }
 
+/**
+ * @brief Update yr, month, and day for Julian time in utc
+ * 
+ * @param yr - 
+ * @param mo 
+ * @param day 
+ */
 void Time::updateUTC(int &yr, int &mo, double &day) {
     std::time_t *currentTime;
     std::time(currentTime);

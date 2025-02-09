@@ -1,14 +1,9 @@
-#include <iostream>
-
 #include "solarTracking.h"
-#include "time.h"
-#include "julianDate.h"
-#include "angles.h"
 
 Sun::Sun()
 {
-    double latitude = 42.9364;
-    double longitude = 85.6681;
+    double latitude = 46.731705;
+    double longitude = -116.999939;
 
     earthLatitude = latitude;
     earthLongitude = longitude;
@@ -79,7 +74,7 @@ void Sun::calcRightAscension()
 
     double correctedEclipticObliquity = elipticObliquity + correctionAmount; // obliquity input into function in radians
 
-    rightAscension = atan2(cos(elipticObliquity) * sin(apparentLongitude), cos(apparentLongitude));
+    rightAscension = atan2(cos(correctedEclipticObliquity) * sin(apparentLongitude), cos(apparentLongitude));
 
     radToDegree(rightAscension);
 
@@ -93,7 +88,7 @@ void Sun::calcDeclination()
 
     double correctedEclipticObliquity = elipticObliquity + correctionAmount; // obliquity input into function in radians
 
-    declinaton = asin(sin(elipticObliquity) * sin(apparentLongitude));
+    declinaton = asin(sin(correctedEclipticObliquity) * sin(apparentLongitude));
 
     return;
 }
@@ -166,7 +161,6 @@ void Sun::calcAltitude()
 
 void Sun::getAltitude()
 {
-    cout << "\nI Hope this works\t" << altitude;
+    cout << "\nI Hope this works\t" << altitude << '\n';
     return;
 }
-
