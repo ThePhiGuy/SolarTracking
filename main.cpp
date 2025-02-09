@@ -8,5 +8,8 @@ using namespace std;
 
 int main()
 {
+    double test = dynamicUniversalTimeOffset(2020, 0);
+
+    cout << "\n" << test << endl;
     return 0;
 }

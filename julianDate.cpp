@@ -28,7 +28,7 @@ double julianEphimerisDay(int year, int month, double day)
 {
     double julian = julianDay(year, month, day);
 
-    double offset = dynamicUniversalTimeOffset(julian);
+    double offset = dynamicUniversalTimeOffset(year, month);
 
     return (julian + offset);
 }

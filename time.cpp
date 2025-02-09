@@ -21,16 +21,19 @@ double greenwichApparentSiderealTime(double greenwichMeanSidreal)
     return 0.0;
 }
 
-inline double dynamicUniversalTimeOffset(double julianDate)
+double dynamicUniversalTimeOffset(int year, int month)
 {
-    double julianCenturies = (julianDate - 2451545.0) / 36525;
-    double timeDifference = 102.3 + (123.5 * julianCenturies) + (32.5 * pow(julianCenturies, 2)); // offset = TD - UT
+    // Only an accurate estimate between 2005 and 2050
+
+    double y = year + (month - 0.5)/12; // approx decimal year
+    double t = y - 2000;
+    double timeDifference = 69.92 + (0.32217 * t) + (0.005589 * pow(t, 2));
     return timeDifference;
 }
 
-double dynamicalTime(double julianDate, double universalTime)
+double dynamicalTime(double julianDate, double universalTime, int year, int month)
 {
-    double timeDifference = dynamicUniversalTimeOffset(julianDate); // gets offset from other function
+    double timeDifference = dynamicUniversalTimeOffset(year, month); // gets UT/DT offset
 
     double dynamicalTime = timeDifference + universalTime; // Universal time in seconds required
 
