@@ -66,6 +66,17 @@ string dmsFormatter(int degrees, int minutes, double seconds)
     return (formatted);
 }
 
+void degreeToRad(double &degrees)
+{
+    degrees = degrees * (3.1415927/180);
+    return;
+}
+void radToDegree(double &radians)
+{
+    radians = radians * (180/3.1415927);
+    return;
+}
+
 
 
 void simplifyDegrees(double &timeDegrees)

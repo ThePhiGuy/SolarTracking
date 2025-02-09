@@ -16,6 +16,9 @@ void DMStoHMS(int, int, double, int&, int&, double&);
 string hmsFormatter(int, int, double);
 string dmsFormatter(int, int, double);
 
+void degreeToRad(double);
+void radToDegree(double);
+
 void simplifyDegrees(double&); // Simplifies degree time down into a whole number between 0 and 360
 
 #endif
