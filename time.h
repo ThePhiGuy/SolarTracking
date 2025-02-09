@@ -12,6 +12,6 @@ namespace Time {
 
     double dynamicUniversalTimeOffset(int, int);
 
-    double dynamicalTime(double, double); 
+    double dynamicalTime(double, double, int, int); 
 }
 #endif
