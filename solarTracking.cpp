@@ -31,7 +31,10 @@ void Sun::julianAndGrenwich()
 {
     Time::updateUTC(year, month, day);
     JD = Julian::julianDay(year, month, day);
-    JDE = Julian::julianEphimerisDay(year, month, day);
+    // JDE = Julian::julianEphimerisDay(year, month, day);
+    JDE = JD;
+    earthLatitude = 42.9328;
+    earthLongitude = 85.5815;
     GMST = Time::greenwichMeanSiderealTime(JD);
 
     return;
@@ -137,9 +140,8 @@ void Sun::calcObliquityNutation()
 
 void Sun::calcLocalHourAngle()
 {
-    localHourAngle = GMST - earthLongitude - rightAscension; // All values in degrees, output LHA is in Degrees.
 
-    simplifyDegrees(localHourAngle);
+    localHourAngle = GMST - earthLongitude - rightAscension; // All values in degrees, output LHA is in Degrees.
 
     degreeToRad(localHourAngle);
 
@@ -150,8 +152,6 @@ void Sun::calcAltitude()
 {
     double tempLat = earthLatitude;
     degreeToRad(tempLat); // Temporary Latitude used to not interrupt other functions that use latitude in degrees. Fix at some point.
-
-    degreeToRad(localHourAngle); 
 
     altitude = asin(sin(tempLat) * sin(declinaton) + cos(tempLat) * cos (declinaton) * cos(localHourAngle));
 
@@ -169,11 +169,11 @@ void Sun::printDebug() {
     cout << "Lat: " << earthLatitude <<
     "\nLong: " << earthLongitude <<
     "\nApparent Long: " << apparentLongitude <<
-    "\nCorrection Omega: " << correctionOmega <<
-    "\nEliptical Obliquity: " << elipticObliquity <<
-    "\nObliquity Nutation: " << obliquityNutation <<
-    "\nRA: " << rightAscension <<
-    "\nDec: " << declinaton <<
+    "\nCorrection Omega: " << correctionOmega << // Confirmed close-enough accurate
+    "\nEliptical Obliquity: " << elipticObliquity << // Confirmed close-enough accurate.
+    "\nObliquity Nutation: " << obliquityNutation << 
+    "\nRA: " << rightAscension << // Confirmed Correct
+    "\nDec: " << declinaton << // Confirmed Correct
     "\nLocal Hour Angle: " << localHourAngle <<
     "\nAlt: " << altitude <<
     "\nYear: " << year <<
