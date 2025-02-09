@@ -1,10 +1,6 @@
 #include "time.h"
-#include "angles.h"
-#include <cmath>
 
-using namespace std;
-
-double greenwichMeanSiderealTime(double julianDate)
+double Time::greenwichMeanSiderealTime(double julianDate)
 {
     double julianCenturies = (julianDate - 2451545.0) / 36525;
 
@@ -15,13 +11,22 @@ double greenwichMeanSiderealTime(double julianDate)
     return (meanSidereal); // OUTPUT IN DEGREES!! Input Julian Date of current UT time.
 }
 
-double greenwichApparentSiderealTime(double greenwichMeanSidreal)
+double Time::greenwichApparentSiderealTime(double greenwichMeanSidreal)
 {
     // @TODO : Implement Apparent Sidereal Time accounting for Nutation
     return 0.0;
 }
 
-double dynamicUniversalTimeOffset(int year, int month)
+void Time::updateUTC(int &yr, int &mo, double &day) {
+    std::time_t *currentTime;
+    std::time(currentTime);
+    std::tm *gm = gmtime(currentTime);
+    yr = gm->tm_year;
+    mo = gm->tm_mon;
+    day = gm->tm_mday + (gm->tm_min*60 + gm->tm_hour*3600)/static_cast<double>(86400);
+}
+
+double Time::dynamicUniversalTimeOffset(int year, int month)
 {
     // Only an accurate estimate between 2005 and 2050
 
@@ -31,7 +36,7 @@ double dynamicUniversalTimeOffset(int year, int month)
     return timeDifference;
 }
 
-double dynamicalTime(double julianDate, double universalTime, int year, int month)
+double Time::dynamicalTime(double julianDate, double universalTime, int year, int month)
 {
     double timeDifference = dynamicUniversalTimeOffset(year, month); // gets UT/DT offset
 

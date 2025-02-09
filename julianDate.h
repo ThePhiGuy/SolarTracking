@@ -1,6 +1,7 @@
 #ifndef julianDate_HPP
 #define julianDate_HPP
 
+#include "time.h"
 
 double julianDay(int, int, double); // Note - Conversion only good within bounds of 1900-2100
 inline double julianToModified(double);

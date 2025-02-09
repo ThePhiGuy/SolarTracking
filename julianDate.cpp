@@ -1,5 +1,4 @@
 #include "julianDate.h"
-#include "time.h"
 
 using namespace std;
 
@@ -28,7 +27,7 @@ double julianEphimerisDay(int year, int month, double day)
 {
     double julian = julianDay(year, month, day);
 
-    double offset = dynamicUniversalTimeOffset(year, month);
+    double offset = Time::dynamicUniversalTimeOffset(year, month);
 
     return (julian + offset);
 }
