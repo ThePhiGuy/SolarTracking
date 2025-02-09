@@ -20,3 +20,21 @@ double greenwichApparentSiderealTime(double greenwichMeanSidreal)
     // @TODO : Implement Apparent Sidereal Time accounting for Nutation
     return 0.0;
 }
+
+inline double dynamicUniversalTimeOffset(double julianDate)
+{
+    double julianCenturies = (julianDate - 2451545.0) / 36525;
+    double timeDifference = 102.3 + (123.5 * julianCenturies) + (32.5 * pow(julianCenturies, 2)); // offset = TD - UT
+    return timeDifference;
+}
+
+double dynamicalTime(double julianDate, double universalTime)
+{
+    double timeDifference = dynamicUniversalTimeOffset(julianDate); // gets offset from other function
+
+    double dynamicalTime = timeDifference + universalTime; // Universal time in seconds required
+
+    return dynamicalTime; // dynamicaltime (DT) in seconds
+}
+
+
