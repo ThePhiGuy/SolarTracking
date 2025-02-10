@@ -35,7 +35,7 @@ class Sun
         double GMST; // Grenwich Mean Sidreal Time
 
     public:
-        Sun();
+        Sun(double, double);
         void updateValues();
         void julianAndGrenwich();
 

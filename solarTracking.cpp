@@ -1,13 +1,7 @@
 #include "solarTracking.h"
 
-Sun::Sun()
+Sun::Sun(double latitude, double longitude)
 {
-    // double latitude = 46.731705;
-    // double longitude = 116.999939;
-
-    double latitude = 46.731705;
-    double longitude = 116.999939;
-
     earthLatitude = latitude;
     earthLongitude = longitude;
     
@@ -162,7 +156,7 @@ void Sun::calcAltitude()
 
 void Sun::getAltitude()
 {
-    cout << "\nI Hope this works\t" << altitude << '\n';
+    cout << "\nAltitude of the Sun\t : " << altitude << "degrees\n";
     return;
 }
 
