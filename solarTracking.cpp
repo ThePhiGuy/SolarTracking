@@ -22,6 +22,8 @@ void Sun::updateValues()
     calcElipticObliquity();
     calcLocalHourAngle();
     calcAltitude();
+    calcAzimuth();
+    calcSlope();
 }
 
 void Sun::julianAndGrenwich()
@@ -154,9 +156,36 @@ void Sun::calcAltitude()
     return;
 }
 
+void Sun::calcAzimuth()
+{
+    double tempLat = earthLatitude;
+    degreeToRad(tempLat); // Temporary Latitude used to not interrupt other functions that use latitude in degrees. Fix at some point.
+
+    azimuth = atan2(sin(localHourAngle), cos(localHourAngle) * sin(tempLat) - tan(declinaton) * cos(tempLat));
+    return;
+}
+
+void Sun::calcSlope()
+{
+    // tan = sin/cos
+    double solarZenithAngle = 90 - altitude;
+
+    panelSlope = atan2(sin(solarZenithAngle) * abs(cos(azimuth)), cos(solarZenithAngle));
+
+    radToDegree(panelSlope);
+
+    return;
+}
+
 void Sun::getAltitude()
 {
     cout << "\nAltitude of the Sun\t : " << altitude << "degrees\n";
+    return;
+}
+
+void Sun::getSlope()
+{
+    cout << "\nOptimal Solar Panel Slope\t : " << panelSlope << "degrees\n";
     return;
 }
 

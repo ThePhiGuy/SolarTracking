@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-    bool debug = false;
+    bool debug = true;
     double latitude, longitude;
     if (!debug) 
     {
@@ -30,6 +30,7 @@ int main()
 
     solarTest.updateValues();
     solarTest.getAltitude();
+    solarTest.getSlope();
 
     return 0;
 }

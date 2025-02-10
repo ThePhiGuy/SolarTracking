@@ -26,6 +26,9 @@ class Sun
         double localHourAngle; // Stored in Radians
 
         double altitude; // ouput in Degrees
+        double azimuth;
+
+        double panelSlope;
 
         double day;
         int year, month;
@@ -47,6 +50,9 @@ class Sun
         void calcLocalHourAngle();
 
         void calcAltitude();
+        void calcAzimuth();
+        void calcSlope();
+        void getSlope();
         void getAltitude();
 
         void printDebug();
