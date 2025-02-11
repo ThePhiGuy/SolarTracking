@@ -26,6 +26,31 @@ void Sun::updateValues()
     calcSlope();
 }
 
+string Sun::customTimeUpdate(int year, int month, double day)
+{
+    JD = Julian::julianDay(year, month, day);
+    // JDE = Julian::julianEphimerisDay(year, month, day);
+    JDE = JD;
+    GMST = Time::greenwichMeanSiderealTime(JD);
+
+    calcApparentLongitude();
+    calcElipticObliquity(); // needed before Right Ascension & declination calculations.
+    calcRightAscension();
+    calcDeclination();
+    calcElipticObliquity();
+    calcLocalHourAngle();
+    calcAltitude();
+    calcAzimuth();
+    calcSlope();
+
+    radToDegree(azimuth); // For viewing purposes.
+
+    double subDay = (day - (int)day);
+    double hours = subDay * 24;
+    double minutes = (hours - (int)hours) * 60;
+    return(to_string(year) + " " + to_string(month) + " " + to_string(day) + "  " + to_string((int)hours) + ":" + to_string(minutes) + "\tSlope : " + to_string(panelSlope) + "\tAltitude : " + to_string(altitude) + " degrees \tAzimuth : " + to_string(azimuth) + "\n");
+}
+
 void Sun::julianAndGrenwich()
 {
     Time::updateUTC(year, month, day);
@@ -171,7 +196,7 @@ void Sun::calcSlope()
     double solarZenithAngle = 90 - altitude;
 
     degreeToRad(solarZenithAngle);
-    
+
     panelSlope = atan2(sin(solarZenithAngle) * abs(cos(azimuth)), cos(solarZenithAngle));
 
     radToDegree(panelSlope);

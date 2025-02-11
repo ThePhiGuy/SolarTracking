@@ -28,9 +28,14 @@ int main()
 
     Sun solarTest(latitude, longitude);
 
-    solarTest.updateValues();
-    solarTest.getAltitude();
-    solarTest.getSlope();
+    
+    double day = 11.0;
+    ofstream testfile("out.txt");
+    for (int i = 0; i < 101; i++)
+    {
+        day += .01;
+        testfile << solarTest.customTimeUpdate(2025, 10, day);
+    }
 
     return 0;
 }

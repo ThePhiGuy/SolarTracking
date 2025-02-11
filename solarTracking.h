@@ -5,6 +5,7 @@
 #include "julianDate.h"
 #include "angles.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -56,6 +57,8 @@ class Sun
         void getAltitude();
 
         void printDebug();
+
+        string customTimeUpdate(int, int, double);
 
 };
 
