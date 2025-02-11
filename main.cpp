@@ -18,11 +18,11 @@ int main()
     }
     else
     {
-        double testLong[2] = {85.5815, 46.731705};
-        double testLat[2] = {42.9328, 117.00002};
+        double testLong[4] = {85.5815, 46.731705};
+        double testLat[4] = {42.9328, 117.00002};
 
-        latitude = testLat[0];
-        longitude = testLong[0];
+        latitude = testLat[1];
+        longitude = testLong[1];
 
     }
 

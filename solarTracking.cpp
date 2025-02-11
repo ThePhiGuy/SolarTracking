@@ -170,6 +170,8 @@ void Sun::calcSlope()
     // tan = sin/cos
     double solarZenithAngle = 90 - altitude;
 
+    degreeToRad(solarZenithAngle);
+    
     panelSlope = atan2(sin(solarZenithAngle) * abs(cos(azimuth)), cos(solarZenithAngle));
 
     radToDegree(panelSlope);
@@ -204,6 +206,5 @@ void Sun::printDebug() {
     "\nMonth: " << month <<
     "\nDay: " << day <<
     "\nJulian Date: " << JD <<
-    "\nJulian Date Ephimeris: " << JDE <<
     "\nGMST: " << GMST << '\n';
 }
