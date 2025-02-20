@@ -1,5 +1,10 @@
 #include "solarTracking.h"
 
+
+
+/// @brief Latitude and Longitude explicit-value constructor
+/// @param latitude is the geographic latitude you are calculating for
+/// @param longitude is the geographic longitude you are calculating for
 Sun::Sun(double latitude, double longitude)
 {
     earthLatitude = latitude;
@@ -10,6 +15,7 @@ Sun::Sun(double latitude, double longitude)
     updateValues();
 }
 
+/// @brief function that calls other functions to update class internal values
 void Sun::updateValues()
 {
     // Call all functions needed to update variables in the right order in here.
@@ -27,6 +33,11 @@ void Sun::updateValues()
     calcSlope();
 }
 
+/// @brief Calls all of the needed update-values with the time set manually from an outside user.
+/// @param year integer year
+/// @param month integer month
+/// @param day double fractional day
+/// @return string representing the slope of the solar panel at the supplied date/time
 string Sun::customTimeUpdate(int year, int month, double day)
 {
     JD = Julian::julianDay(year, month, day);
@@ -51,6 +62,7 @@ string Sun::customTimeUpdate(int year, int month, double day)
     return(to_string(year) + " " + to_string(month) + " " + to_string(day) + "  " + to_string((int)hours) + ":" + to_string(minutes) + "\tSlope : " + to_string(panelSlope) + "\tAltitude : " + to_string(altitude) + " degrees \tAzimuth : " + to_string(azimuth) + "\n");
 }
 
+/// @brief function that updates the Julian Date in the class to match that of the current time
 void Sun::julianAndGrenwich()
 {
     Time::updateUTC(year, month, day);
@@ -62,14 +74,13 @@ void Sun::julianAndGrenwich()
     return;
 }
 
+/// @brief calculates the apparent longitude based on the Julian Date set within the class
 void Sun::calcApparentLongitude()
 {
     double t1 = ((JDE - 2451545) / 36525.0); // EQ 21.1 Julian Epoch Centuries
 
     double t2 = t1 * t1; // Calculates T^2 and T^3 once, to use multiple times.
     double t3 = t2 * t1;
-
-    
 
     double geometricMeanLongitude = 280.46645 + (36000.76983 * t1) + (0.0003032 * t2); // Represented by L0 in Degrees EQ 24.2
     double solarMeanAnomaly = 357.52910 + (35999.05030 * t1) - (0.0001559 * t2)- (0.00000048 * t3); // Represented by M in Degrees Equation 24.3
@@ -92,6 +103,7 @@ void Sun::calcApparentLongitude()
     return;
 }
 
+/// @brief calculates right ascension utilizing elipctic obliquity and the nutation, apparent latitude and longitude
 void Sun::calcRightAscension()
 {
     double correctionAmount = 0.00256 * cos(correctionOmega); // Correction Mentioned for obliquity
@@ -192,7 +204,10 @@ void Sun::calcAzimuth()
 void Sun::calcSlope()
 {
     // sin panelDec = cos(altitude)cos(azimuth)
-    // cos panelHourAngle = sin(altitude) / cos(panelDec)
+    // cos panelHourAngle = sin(altitude) / cos(panelDec) (Equations from Prof. Molnar)
+    //
+    // These equations convert from the equatorial coordinate system, to one based on the axis of the solar panel
+    // this makes it so that the latitude is 0, and we have an "hour angle" and a "declination" (declination represents error in tracking)
 
     double panelDec = asin(cos(altitude)*cos(azimuth));
 
@@ -206,6 +221,8 @@ void Sun::calcSlope()
     radToDegree(panelSlope);
     radToDegree(altitude);
 
+    panelSlope += 90; // Sets range of "valid values" on valid solar altitude values to be 0 (facing flat due east) to 180 (facing flat due west)
+
     return;
 }
 
@@ -217,15 +234,18 @@ void Sun::getAltitude()
 
 void Sun::getSlope()
 {
-    for(int i = 0; i < 100; i += 1)
+    for(int i = 0; i < 200; i += 1)
     {
-        day += 1/100.0;
+        day += 4/1000.0;
         JD = Julian::julianDay(year, month, day);
         // JDE = Julian::julianEphimerisDay(year, month, day);
         JDE = JD;
         GMST = Time::greenwichMeanSiderealTime(JD);
         updateValues();
-        cout << "\nDay : " << day << "\tOptimal Solar Panel Slope\t : " << panelSlope << "degrees\t" << altitude << " altitude\n";
+        if (altitude > 0)
+        {
+        cout << "\nDay : " << day << "\tOptimal Solar Panel Slope : " << panelSlope << "\tdegrees\t\t" << altitude << " altitude\n";
+        }
     }
     return;
 }
