@@ -21,21 +21,14 @@ int main()
         double testLong[4] = {85.5815, 46.731705};
         double testLat[4] = {42.9328, 117.00002};
 
-        latitude = testLat[1];
-        longitude = testLong[1];
+        latitude = testLat[0];
+        longitude = testLong[0];
 
     }
 
     Sun solarTest(latitude, longitude);
 
-    
-    double day = 11.0;
-    ofstream testfile("out.txt");
-    for (int i = 0; i < 101; i++)
-    {
-        day += .01;
-        testfile << solarTest.customTimeUpdate(2025, 10, day);
-    }
+    solarTest.getSlope();
 
     return 0;
 }

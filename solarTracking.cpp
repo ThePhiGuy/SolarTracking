@@ -4,13 +4,14 @@ Sun::Sun(double latitude, double longitude)
 {
     earthLatitude = latitude;
     earthLongitude = longitude;
+
+    julianAndGrenwich();
     
     updateValues();
 }
 
 void Sun::updateValues()
 {
-    julianAndGrenwich();
     // Call all functions needed to update variables in the right order in here.
 
     // start of calculations internally
@@ -43,7 +44,6 @@ string Sun::customTimeUpdate(int year, int month, double day)
     calcAzimuth();
     calcSlope();
 
-    radToDegree(azimuth); // For viewing purposes.
 
     double subDay = (day - (int)day);
     double hours = subDay * 24;
@@ -177,7 +177,6 @@ void Sun::calcAltitude()
 
     altitude = asin(sin(tempLat) * sin(declinaton) + cos(tempLat) * cos (declinaton) * cos(localHourAngle));
 
-    radToDegree(altitude);
     return;
 }
 
@@ -192,14 +191,20 @@ void Sun::calcAzimuth()
 
 void Sun::calcSlope()
 {
-    // tan = sin/cos
-    double solarZenithAngle = 90 - altitude;
+    // sin panelDec = cos(altitude)cos(azimuth)
+    // cos panelHourAngle = sin(altitude) / cos(panelDec)
 
-    degreeToRad(solarZenithAngle);
+    double panelDec = asin(cos(altitude)*cos(azimuth));
 
-    panelSlope = atan2(sin(solarZenithAngle) * abs(cos(azimuth)), cos(solarZenithAngle));
+    panelSlope = acos(sin(altitude) / cos(panelDec));
+
+    if (azimuth < 0) // if azimuth is greater than 180deg (or flips signs), panel angle should flip.
+    {
+        panelSlope = panelSlope * -1;
+    }
 
     radToDegree(panelSlope);
+    radToDegree(altitude);
 
     return;
 }
@@ -212,7 +217,16 @@ void Sun::getAltitude()
 
 void Sun::getSlope()
 {
-    cout << "\nOptimal Solar Panel Slope\t : " << panelSlope << "degrees\n";
+    for(int i = 0; i < 100; i += 1)
+    {
+        day += 1/100.0;
+        JD = Julian::julianDay(year, month, day);
+        // JDE = Julian::julianEphimerisDay(year, month, day);
+        JDE = JD;
+        GMST = Time::greenwichMeanSiderealTime(JD);
+        updateValues();
+        cout << "\nDay : " << day << "\tOptimal Solar Panel Slope\t : " << panelSlope << "degrees\t" << altitude << " altitude\n";
+    }
     return;
 }
 

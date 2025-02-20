@@ -26,8 +26,8 @@ class Sun
 
         double localHourAngle; // Stored in Radians
 
-        double altitude; // ouput in Degrees
-        double azimuth;
+        double altitude; // ouput in Radians
+        double azimuth; // output in Radians
 
         double panelSlope;
 
